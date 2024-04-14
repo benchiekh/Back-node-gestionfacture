@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const user = require('../models/user')
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config()
@@ -80,6 +81,7 @@ router.post('/register',async (req,res)=>{
     });
   // Route for user login
   router.post('/login', async (req, res) => {
+    console.log('herrre'+req.body.email)
      const { email, password } = req.body;
   
      try {
@@ -99,7 +101,7 @@ router.post('/register',async (req,res)=>{
          }
   
          // Generate JWT
-         const token = jwt.sign({ userId: userData.id, email: userData.email }, process.env.JWT_SECRET);
+         const token = jwt.sign({ userId: userData.id, email: userData.email,role:userData.role },process.env.JWT_SECRET);
   
          // Send JWT to client
          res.status(200).json({ token });

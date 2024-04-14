@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const app  = express();
 require('./config/database.js')
 const userRouter=require('./router/user.js')
+const FactureRouter=require('./router/Facture')
+
 const detenv = require('dotenv').config()
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
@@ -14,3 +16,4 @@ app.listen(process.env.PORT,()=>{
 })
 
 app.use('/user',userRouter);
+app.use('/facture',FactureRouter);

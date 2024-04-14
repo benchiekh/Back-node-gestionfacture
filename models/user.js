@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-schema=mongoose.Schema;
+const Schema=mongoose.Schema;
 const bcrypt = require('bcrypt');
-const userschema = new schema({
+const userschema = new Schema({
     firstname: {
         type: String,
         require: true,
@@ -13,6 +13,7 @@ const userschema = new schema({
     role: {
         type: String,
         require: false,
+        default:"user"
     },
     status: {
         type: Boolean,
@@ -31,10 +32,10 @@ const userschema = new schema({
         require: true,
     },
     /*
-    Reservation: [{
+    facture: [{
         type: Schema.Types.ObjectId,
-        ref: "Reservation",
-    }],  */
+        ref: "Facture",
+    }], */  
 
 })
 userschema.pre('save',async function(next){
