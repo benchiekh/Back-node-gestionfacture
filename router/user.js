@@ -22,6 +22,7 @@ router.post('/register',async (req,res)=>{
             email:req.body.email,
             telephone:req.body.telephone,
             status:false,
+            facture:[],
             password:req.body.password
   
       })
@@ -110,5 +111,20 @@ router.post('/register',async (req,res)=>{
          res.status(500).json({ message: 'Internal server error' });
      }
   });
+  // GET user by ID
+router.get('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const userdata = await user.findById(userId).populate('facture');
+        if (!userdata) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(userdata);
+        console.log(userdata.facture)
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
   
   module.exports = router;

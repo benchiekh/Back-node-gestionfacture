@@ -31,11 +31,11 @@ const userschema = new Schema({
         type: String,
         require: true,
     },
-    /*
+    
     facture: [{
         type: Schema.Types.ObjectId,
         ref: "Facture",
-    }], */  
+    }],  
 
 })
 userschema.pre('save',async function(next){

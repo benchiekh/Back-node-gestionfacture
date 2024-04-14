@@ -1,61 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const  Facture = require('../models/Facture'); 
+const User = require('../models/user'); // Adjust the path as needed
+const Facture = require('../models/Facture'); // Adjust the path as needed
 
-
-router.post('/', async (req, res) => {
+// POST route to add a new facture for a user
+router.post('/:userId/add', async (req, res) => {
     try {
-        const { amount, contactId } = req.body;
-        const facture = new Facture({
-            amount: amount,
-          
+        const userId = req.params.userId;
+        const { amount, Date_fact, Date_paie, Type_paie, Etat_paie, Nom_fourniseur } = req.body;
+
+        // Create the facture
+        const newFacture = new Facture({
+            amount,
+            Date_fact,
+            Date_paie,
+            Type_paie,
+            Etat_paie,
+            Nom_fourniseur
         });
-        const savedFacture = await facture.save();
+
+        // Save the facture
+        const savedFacture = await newFacture.save();
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Add the facture ID to the user's facture array
+        user.facture.push(savedFacture._id);
+
+        // Save the updated user with the facture reference
+        await user.save();
+
         res.status(201).json(savedFacture);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error adding facture for user:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
 
-router.get('/', async (req, res) => {
-    try {
-        const factures = await Facture.find();
-        res.json(factures);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-router.get('/:id', async (req, res) => {
-    try {
-        const facture = await Facture.findById(req.params.id).populate('contact');
-        if (!facture) {
-            return res.status(404).json({ error: 'Facture not found' });
-        }
-        res.json(facture);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-router.put('/:id', async (req, res) => {
-    try {
-        const updatedFacture = await Facture.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updatedFacture);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-router.delete('/:id', async (req, res) => {
-    try {
-        const deletedFacture = await Facture.findByIdAndDelete(req.params.id);
-        res.json(deletedFacture);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
 
 module.exports = router;
