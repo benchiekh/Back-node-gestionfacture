@@ -115,7 +115,10 @@ router.post('/register',async (req,res)=>{
 router.get('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const userdata = await user.findById(userId).populate('facture');
+        const userdata = await user.findById(userId).populate({
+            path:"facture",
+            path:"article"
+        });
         if (!userdata) {
             return res.status(404).json({ message: "User not found" });
         }
