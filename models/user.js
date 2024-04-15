@@ -35,6 +35,11 @@ const userschema = new Schema({
     facture: [{
         type: Schema.Types.ObjectId,
         ref: "Facture",
+    }],
+    
+    article: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article",
     }],  
 
 })
