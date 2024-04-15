@@ -5,6 +5,7 @@ require('./config/database.js')
 const userRouter=require('./router/user.js')
 const FactureRouter=require('./router/Facture')
 const ArticleRouter=require('./router/Article.js')
+const DepenseRouter=require('./router/Depense.js')
 
 const detenv = require('dotenv').config()
 var bodyParser = require('body-parser');
@@ -19,3 +20,4 @@ app.listen(process.env.PORT,()=>{
 app.use('/user',userRouter);
 app.use('/facture',FactureRouter);
 app.use('/article',ArticleRouter);
+app.use('/depense',DepenseRouter);

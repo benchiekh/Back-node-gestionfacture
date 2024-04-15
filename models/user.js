@@ -42,6 +42,11 @@ const userschema = new Schema({
         ref: "Article",
     }],  
 
+    depense: [{
+        type: Schema.Types.ObjectId,
+        ref: "Depense",
+    }],  
+
 })
 userschema.pre('save',async function(next){
     const user =this;
