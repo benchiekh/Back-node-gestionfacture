@@ -60,7 +60,7 @@ router.get('/:factureId', async (req, res) => {
 });
 
 // PUT route to update a facture by ID
-router.put('/factures/:factureId', async (req, res) => {
+router.put('/:factureId', async (req, res) => {
     try {
         const factureId = req.params.factureId;
         const { amount, Date_fact, Date_paie, Type_paie, Etat_paie, Nom_fourniseur } = req.body;
@@ -90,16 +90,19 @@ router.put('/factures/:factureId', async (req, res) => {
     }
 });
 // DELETE route to delete a facture by ID
-router.delete('/factures/:factureId', async (req, res) => {
+router.delete('/:factureId', async (req, res) => {
     try {
         const factureId = req.params.factureId;
 
-        // Find the facture by ID and delete it
+        // Find and delete the facture by ID
         const deletedFacture = await Facture.findByIdAndDelete(factureId);
 
-        if (!deletedFacture) {
-            return res.status(404).json({ message: "Facture not found" });
-        }
+     
+        // Update the users who have this facture
+        await User.updateMany(
+            { facture: factureId },
+            { $pull: { facture: factureId } }
+        );
 
         res.status(200).json({ message: "Facture deleted successfully" });
     } catch (error) {
