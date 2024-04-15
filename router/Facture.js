@@ -40,6 +40,73 @@ router.post('/:userId/add', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+// GET facture by ID
+router.get('/:factureId', async (req, res) => {
+    try {
+        const factureId = req.params.factureId;
+
+        // Find the facture by ID
+        const facture = await Facture.findById(factureId);
+
+        if (!facture) {
+            return res.status(404).json({ message: "Facture not found" });
+        }
+
+        res.status(200).json(facture);
+    } catch (error) {
+        console.error("Error fetching facture by ID:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+// PUT route to update a facture by ID
+router.put('/factures/:factureId', async (req, res) => {
+    try {
+        const factureId = req.params.factureId;
+        const { amount, Date_fact, Date_paie, Type_paie, Etat_paie, Nom_fourniseur } = req.body;
+
+        // Update the facture using findOneAndUpdate
+        const updatedFacture = await Facture.findOneAndUpdate(
+            { _id: factureId },
+            { $set: { 
+                amount,
+                Date_fact,
+                Date_paie,
+                Type_paie,
+                Etat_paie,
+                Nom_fourniseur 
+            }},
+            { new: true }
+        );
+
+        if (!updatedFacture) {
+            return res.status(404).json({ message: "Facture not found" });
+        }
+
+        res.status(200).json(updatedFacture);
+    } catch (error) {
+        console.error("Error updating facture by ID:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+// DELETE route to delete a facture by ID
+router.delete('/factures/:factureId', async (req, res) => {
+    try {
+        const factureId = req.params.factureId;
+
+        // Find the facture by ID and delete it
+        const deletedFacture = await Facture.findByIdAndDelete(factureId);
+
+        if (!deletedFacture) {
+            return res.status(404).json({ message: "Facture not found" });
+        }
+
+        res.status(200).json({ message: "Facture deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting facture by ID:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 
 
