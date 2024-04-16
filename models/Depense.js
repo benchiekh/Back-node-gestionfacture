@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-
+ 
+const mongoose = require('mongoose');
 
 const DepenseSchema = mongoose.Schema({
     Categorie: String,
