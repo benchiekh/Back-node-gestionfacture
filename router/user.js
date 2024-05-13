@@ -130,5 +130,51 @@ router.get('/users/:id', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+router.get('/getall', async (req, res) => {
+    try {
+        const users = await user.find();
+        res.json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+router.put('/users/:id', async (req, res) => {
+    const userId = req.params.id;
+    const userData = req.body; // Assuming the updated user data is sent in the request body
+
+    try {
+        // Find the user by ID and update its information
+        const updatedUser = await user.findByIdAndUpdate(userId, userData, { new: true });
+
+        if (!updatedUser) {
+            // If the user with the given ID is not found
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json(updatedUser); // Return the updated user data
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+router.delete('/users/:id', async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        // Find the user by ID and delete it
+        const deletedUser = await user.findByIdAndDelete(userId);
+        
+        if (!deletedUser) {
+            // If the user with the given ID is not found
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
   
   module.exports = router;

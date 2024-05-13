@@ -6,7 +6,9 @@ const userRouter=require('./router/user.js')
 const FactureRouter=require('./router/Facture')
 const ArticleRouter=require('./router/Article.js')
 const DepenseRouter=require('./router/Depense.js')
-
+var cors = require('cors');
+// use it before all route definitions
+app.use(cors())
 const detenv = require('dotenv').config()
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
