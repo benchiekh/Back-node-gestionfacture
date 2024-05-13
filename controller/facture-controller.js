@@ -61,3 +61,11 @@ export const deleteInvoice = async (request, response) => {
         response.status(409).json({ message: error.message});     
     }
 }
+export const getAllFactures = async (request, response) => {
+    try {
+        const factures = await Facture.find();
+        response.status(200).json(factures);
+    } catch (error) {
+        response.status(404).json({ message: error.message });
+    }
+}

@@ -13,7 +13,7 @@ const userschema = new Schema({
     role: {
         type: String,
         require: false,
-        default:"user"
+        default:"Gerant"
     },
     status: {
         type: Boolean,

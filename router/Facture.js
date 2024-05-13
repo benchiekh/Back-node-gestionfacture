@@ -89,6 +89,18 @@ router.put('/:factureId', async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
+router.get('/getallfacture', async (req, res) => {
+    try {
+        // Trouver toutes les factures
+        const factures = await Facture.find();
+
+        res.status(200).json(factures);
+    } catch (error) {
+        console.error("Erreur lors de la récupération de toutes les factures :", error);
+        res.status(500).json({ message: "Erreur Interne du Serveur" });
+    }
+});
+
 // DELETE route to delete a facture by ID
 router.delete('/:factureId', async (req, res) => {
     try {
