@@ -13,7 +13,10 @@ const userschema = new Schema({
     role: {
         type: String,
         require: false,
+ 
         default:"Gerant"
+
+        
     },
     status: {
         type: Boolean,
@@ -35,6 +38,16 @@ const userschema = new Schema({
     facture: [{
         type: Schema.Types.ObjectId,
         ref: "Facture",
+    }],
+    
+    article: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article",
+    }],  
+
+    depense: [{
+        type: Schema.Types.ObjectId,
+        ref: "Depense",
     }],  
 
 })
